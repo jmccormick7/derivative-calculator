@@ -3,5 +3,5 @@
  * It allows for function portions, variables, or numbers to be raised to a power
  * @author John McCormick
  */
-public class Polynomial {
+public class Polynomial extends Function {
 }
