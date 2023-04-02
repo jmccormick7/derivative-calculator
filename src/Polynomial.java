@@ -4,4 +4,15 @@
  * @author John McCormick
  */
 public class Polynomial extends Function {
+    public Function derivative() {
+        return null;
+    }
+
+    public double value(double input) {
+        return 0;
+    }
+
+    public double value() {
+        return 0;
+    }
 }

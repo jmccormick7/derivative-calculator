@@ -3,29 +3,77 @@
  * It can represent both coefficients and constants
  * @author John McCormick
  */
-public class Number extends Operand {
+public class Number extends Function {
+
     /**
-     *
-     * @param value
+     * The value of the number
+     */
+    private final double numberValue;
+
+    /**
+     * Constructor for Number, it creates a new number, with numberValue of the number.
+     * @param value a double with the value of the number
      */
     public Number(double value) {
-        super(value);
+        this.numberValue = value;
     }
 
     /**
-     *
-     * @return
+     * Getter method for the number value
+     * @return number value
      */
-    public Operand derivative() {
+    public double getNumberValue() {
+        return numberValue;
+    }
+
+
+    /**
+     * This method calculates the derivative of a number. A derivative of a solo constant is always 0
+     * @return a new Number with a value of 0.
+     */
+    public Function derivative() {
         return new Number(0);
     }
 
     /**
-     *
-     * @return
+     * Method overrides the value() method to return the value of the number
+     * @return value of the number as a double
+     */
+    @Override
+    public double value() {
+        return getNumberValue();
+    }
+
+    /**
+     * Method that overrides the value(input) method to return the value of the number
+     * @param input a double at which to evaluate the function
+     * @return value of the number as a double
+     */
+    @Override
+    public double value(double input) {
+        return getNumberValue();
+    }
+
+    /**
+     * Overriding the toString() method so that it returns the operand value in string form.
+     * @return string form of the operand value.
      */
     @Override
     public String toString() {
-        return super.getOperandValue().toString();
+        // uses valueOf() from the Java API
+        return String.valueOf(getNumberValue());
+    }
+
+    /**
+     * Override of equals() method to only return true if the object is also a number with the same number value
+     * @param o object that is being compared to the number the method is called on
+     * @return boolean is true if they are both numbers with equal values, and false if not.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if ((o instanceof Number))
+            if (((Number) o).getNumberValue() == this.getNumberValue())
+                return true;
+        return false;
     }
 }
