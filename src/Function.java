@@ -15,8 +15,9 @@ public abstract class Function {
     /**
      * An overload on value that allows for calling the value of a function with no variables and only constants
      * @return the value of the function/expression.
+     * @throws UnsupportedOperationException if there is a variable in the function
      */
-    public abstract double value();
+    public abstract double value() throws UnsupportedOperationException;
 
     /**
      * A method that solves the derivative of the function it is called on.

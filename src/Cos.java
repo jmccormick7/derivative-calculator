@@ -26,37 +26,41 @@ public class Cos extends Function{
     }
 
     /**
-     *
-     * @return
+     * Overriding the derivative function to give the derivative of a cosine function
+     * @return the derivative function
      */
     public Function derivative() {
-        return null;
+        if(getOperand() instanceof Number) {
+            return new Number(0);
+        }
+        BinaryOp secondHalf = new BinaryOp(new Number(-1), BinaryOp.Op.MULT, new Sin(getOperand()));
+        return new BinaryOp(getOperand().derivative(), BinaryOp.Op.MULT, secondHalf).simplify();
     }
 
     /**
-     *
+     * Overriding the value(input) function so that it gives the value of the cos function at a given x value
      * @param input a double at which to evaluate the function
-     * @return
+     * @return the value at the inputted x val.
      */
     public double value(double input) {
-        return 0;
+        return Math.cos(getOperand().value(input));
     }
 
     /**
-     *
-     * @return
-     * @throws UnsupportedOperationException
+     * Overriding the value() function so that it gives the value of the cosine expression
+     * @return the value of the cosine exception
+     * @throws UnsupportedOperationException when there is a variable in the function calling value()
      */
     public double value() throws UnsupportedOperationException {
-        return 0;
+        return Math.cos(getOperand().value());
     }
 
     /**
-     *
-     * @return
+     * Overriding the simplify method so that it simplifies the operand of the sine function.
+     * @return the simplified cosine function
      */
     public Function simplify(){
-        return new Variable();
+        return new Cos(getOperand().simplify());
     }
 
     /**
@@ -66,6 +70,18 @@ public class Cos extends Function{
     @Override
     public String toString() {
         return "Cos[" + getOperand().toString() + "]";
+    }
+
+    /**
+     * Overriding the equals method to return true if the operands are the same
+     * @param o Object that is being compared to the Cos function
+     * @return a boolean representing whether they are equal or not
+     */
+    @Override
+    public boolean equals(Object o) {
+        return (o instanceof Cos &&
+                this.getOperand().equals(((Cos) o).getOperand()));
+
     }
 }
 

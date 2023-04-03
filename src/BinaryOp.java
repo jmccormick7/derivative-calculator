@@ -5,10 +5,15 @@
  */
 public class BinaryOp extends Function{
 
+    /**
+     * Enum Op, represents the four binary operations (addition, subtraction, multiplication, and division)
+     * It also contains operation specific methods for value, derivative, and toString
+     * Called as PLUS, SUB, MULT, DIV
+     */
     public enum Op {
         PLUS {
             @Override
-            public double value(Function left, Function right) {
+            public double value(Function left, Function right) throws UnsupportedOperationException {
                 return left.value() + right.value();
             }
 
@@ -29,7 +34,7 @@ public class BinaryOp extends Function{
         },
         SUB {
             @Override
-            public double value(Function left, Function right) {
+            public double value(Function left, Function right) throws UnsupportedOperationException {
                 return left.value() - right.value();
             }
 
@@ -50,7 +55,7 @@ public class BinaryOp extends Function{
         },
         MULT {
             @Override
-            public double value(Function left, Function right) {
+            public double value(Function left, Function right) throws UnsupportedOperationException{
                 return left.value() * right.value();
             }
 
@@ -73,7 +78,7 @@ public class BinaryOp extends Function{
         },
         DIV {
             @Override
-            public double value(Function left, Function right) {
+            public double value(Function left, Function right) throws UnsupportedOperationException{
                 return left.value() / right.value();
             }
 
@@ -102,8 +107,9 @@ public class BinaryOp extends Function{
          * @param left left Operand of the expression
          * @param right right Operand of the expression
          * @return the value of the function
+         * @throws UnsupportedOperationException when a variable is in either of the functions
          */
-        public abstract double value(Function left, Function right);
+        public abstract double value(Function left, Function right) throws UnsupportedOperationException;
 
         /**
          * Method that gets the value for the enum used(when a value is inputted)
@@ -177,13 +183,6 @@ public class BinaryOp extends Function{
      */
     @Override
     public double value() throws UnsupportedOperationException{
-        try {
-            getRightOperand().value();
-            getLeftOperand().value();
-        }
-        catch (UnsupportedOperationException e){
-            throw e;
-        }
         return getOperator().value(getLeftOperand(),getRightOperand());
     }
 

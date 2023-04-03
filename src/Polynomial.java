@@ -54,10 +54,10 @@ public class Polynomial extends Function {
         Number coeff = new Number(getPower());
         if (!(simplifiedOperand instanceof Variable)) {
             BinaryOp currentDeriv = new BinaryOp(coeff, BinaryOp.Op.MULT, polyDeriv);
-            return new BinaryOp(currentDeriv, BinaryOp.Op.MULT, simplifiedOperand.derivative());
+            return new BinaryOp(currentDeriv, BinaryOp.Op.MULT, simplifiedOperand.derivative()).simplify();
         }
         else
-            return new BinaryOp(coeff, BinaryOp.Op.MULT, polyDeriv);
+            return new BinaryOp(coeff, BinaryOp.Op.MULT, polyDeriv).simplify();
     }
 
     /**
@@ -77,12 +77,6 @@ public class Polynomial extends Function {
      */
     @Override
     public double value() throws UnsupportedOperationException {
-        try {
-            getOperand().value();
-        }
-        catch (UnsupportedOperationException e) {
-            throw e;
-        }
         return Math.pow(getOperand().value(), getPower());
     }
 
@@ -95,8 +89,8 @@ public class Polynomial extends Function {
     }
 
     /**
-     *
-     * @return
+     * Overriding the simplify function so that it simplifies the polynomial function
+     * @return the simplified expression
      */
     @Override
     public Function simplify() {
@@ -105,6 +99,9 @@ public class Polynomial extends Function {
         // If the power is 1, return the simplified operand
         if (getPower() == 1) {
             return simplifiedOperand;
+        }
+        if (getPower() == 0) {
+            return new Number(1);
         }
 
         return new Polynomial(simplifiedOperand, getPower());
