@@ -23,9 +23,10 @@ public class Variable extends Function {
     /**
      * Overrrides the value() method to throw an UnsupportedOperationException
      * @return UnsupportedOperationException
+     * @throws UnsupportedOperationException when no value is given to replace the variable with
      */
     @Override
-    public double value() {
+    public double value() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
@@ -58,6 +59,14 @@ public class Variable extends Function {
         if (o instanceof Variable)
             return true;
         return false;
+    }
 
+    /**
+     * Overriding the simplify method for variables
+     * @return this because no simplification is needed for variables
+     */
+    @Override
+    public Function simplify(){
+        return this;
     }
 }

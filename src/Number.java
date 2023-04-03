@@ -76,4 +76,13 @@ public class Number extends Function {
                 return true;
         return false;
     }
+
+    /**
+     * Overriding the simplify method for number
+     * @return this because no simplification is required for number
+     */
+    @Override
+    public Function simplify(){
+        return this;
+    }
 }

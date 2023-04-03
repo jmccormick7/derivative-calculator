@@ -24,4 +24,9 @@ public abstract class Function {
      */
     public abstract Function derivative();
 
+    /**
+     * A method that simplifies any expressions removing any unnecessary terms
+     * @return the simplified funtion
+     */
+    public abstract Function simplify();
 }

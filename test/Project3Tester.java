@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNull;
 public class Project3Tester {
 
     /**
-     * Test for operands .equals() method
+     * Test for number and variable .equals() method
      */
     @Test
     public void testOperandEquals() {
@@ -38,7 +38,7 @@ public class Project3Tester {
     }
 
     /**
-     * Test for operands toString() method
+     * Test for variable and number toString() method
      */
     @Test
     public void testOperandToString() {
@@ -59,7 +59,7 @@ public class Project3Tester {
     }
 
     /**
-     * Test the operand constructors, and the getter method for getOperandValue
+     * Test the number constructor, and the getter method for getNumberValue
      */
     @Test
     public void testNumberConstructor(){
@@ -106,5 +106,95 @@ public class Project3Tester {
         assertEquals("value with whole number input test failed on variable", 10, x.value(10), 0);
         // testing a non-whole number input
         assertEquals("value with float number input test failed on variable", 3.14, x.value(3.14), 0);
+    }
+
+    //Testing the Enum Op
+
+    /**
+     * Testing the value method within BinaryOp (Summing)
+     */
+    @Test
+    public void testBinaryOpPlusValue() {
+
+    }
+
+    /**
+     * Testing the value method within BinaryOP (Subtraction)
+     */
+    @Test
+    public void testBinaryOpSubValue() {
+
+    }
+
+    /**
+     * Testing the value method within BinaryOp (Multiplication)
+     */
+    @Test
+    public void testBinaryOpMultValue() {
+
+    }
+
+    /**
+     * Testing the value method within BinaryOp (Division)
+     */
+    @Test
+    public void testBinaryOPDivValue() {
+
+    }
+
+    /**
+     * Testing the derivative method within BinaryOP (Addition + Subtraction)
+     */
+    @Test
+    public void testBinaryOpAddDerivative() {
+
+    }
+
+    /**
+     * Testing the derivative method within BinaryOp (Product Rule)
+     */
+    @Test
+    public void testBinaryOpProductRule() {
+
+    }
+
+    /**
+     * Testing the derivative method within BinaryOP (Quotient Rule)
+     */
+    @Test
+    public void testBinaryOpQuotientRule() {
+
+    }
+
+    /**
+     * Testing the derivative method on compound functions
+     */
+    @Test
+    public void testBinaryOpDerivative() {
+
+    }
+
+    /**
+     * Testing the BinaryOp constructor and getter methods
+     */
+    @Test
+    public void testBinaryOpConstructor() {
+
+    }
+
+    /**
+     * Testing the toString method within BinaryOp
+     */
+    @Test
+    public void testBinaryOpToString() {
+
+    }
+
+    /**
+     * Testing the equals method within BinaryOp
+     */
+    @Test
+    public void testBinaryOpEquals() {
+
     }
 }
