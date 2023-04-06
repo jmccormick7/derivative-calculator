@@ -10,14 +10,6 @@ public class Sin extends Function {
     private final Function operand;
 
     /**
-     * Getter method for the operand of the Sin function
-     * @return the Operand function
-     */
-    public Function getOperand() {
-        return operand;
-    }
-
-    /**
      * The constructor for the Sin class
      * @param operand the operand of the sinusoidal function
      */
@@ -26,12 +18,20 @@ public class Sin extends Function {
     }
 
     /**
+     * Getter method for the operand of the Sin function
+     * @return the Operand function
+     */
+    public Function getOperand() {
+        return operand;
+    }
+
+    /**
      * Overriding the derivative method so that it returns the derivative of a sinusoidal function
      * @return the function that is the derivative of the sin function
      */
     public Function derivative() {
         if(getOperand() instanceof Number) {
-            return new Number(0);
+            return getOperand().derivative();
         }
         return new BinaryOp(getOperand().derivative(), BinaryOp.Op.MULT, new Cos(getOperand())).simplify();
     }

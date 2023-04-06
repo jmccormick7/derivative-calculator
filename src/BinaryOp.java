@@ -244,9 +244,11 @@ public class BinaryOp extends Function{
     @Override
     public boolean equals(Object o){
         return (o instanceof BinaryOp &&
-                this.getLeftOperand().equals(((BinaryOp) o).getRightOperand()) &&
-                this.getOperator() == ((BinaryOp) o).getOperator() &&
-                this.getRightOperand().equals(((BinaryOp) o).getRightOperand()));
+                    this.getLeftOperand().equals(((BinaryOp) o).getLeftOperand()) &&
+                    this.getOperator() == ((BinaryOp) o).getOperator() &&
+                    this.getRightOperand().equals(((BinaryOp) o).getRightOperand()));
+
+
     }
 
     @Override
@@ -256,35 +258,61 @@ public class BinaryOp extends Function{
 
         // Handle specific simplification cases, e.g., addition or multiplication by zero
         if (getOperator() == Op.PLUS || getOperator() == Op.SUB) {
+            // addition or subtraction of 0 with 0 as the first value
             if ((leftSimplified instanceof Number) && (leftSimplified.value() == 0)) {
-                return rightSimplified;
+                if (getOperator() == Op.PLUS) {
+                    return rightSimplified;
+                }
+                else if (getOperator() == Op.SUB) {
+                    return new BinaryOp(new Number(-1), Op.MULT, rightSimplified);
+                }
             }
+            // addition and subtraction of 0 with 0 as the second operand
             else if ((rightSimplified instanceof Number) && (rightSimplified.value() == 0)) {
                 return leftSimplified;
             }
-            if (leftSimplified instanceof Number && rightSimplified instanceof Number){
-                BinaryOp summation = new BinaryOp(leftSimplified, getOperator(), rightSimplified);
-                return new Number(summation.value());
+            // algebraic simplification
+            if (leftSimplified instanceof Number && rightSimplified instanceof Number) {
+                BinaryOp operation = new BinaryOp(leftSimplified, getOperator(), rightSimplified);
+                return new Number(operation.value());
             }
         }
         else if (getOperator() == Op.MULT) {
+            // multiplication of 1
             if (leftSimplified instanceof Number && leftSimplified.value() == 1) {
                 return rightSimplified;
             }
+            // multiplication of 1
             else if (rightSimplified instanceof Number && rightSimplified.value() == 1) {
                 return leftSimplified;
             }
+            // multiplication of 0
             if (rightSimplified instanceof Number && rightSimplified.value() == 0 ||
                     leftSimplified instanceof Number && leftSimplified.value() == 0) {
                 return new Number(0);
             }
+            // distribution of constant onto a coefficient
             if (leftSimplified instanceof Number && rightSimplified instanceof BinaryOp && ((BinaryOp) rightSimplified).getLeftOperand() instanceof Number) {
                 Number num = new Number(leftSimplified.value() * ((BinaryOp) rightSimplified).getLeftOperand().value());
                 return new BinaryOp(num, ((BinaryOp) rightSimplified).getOperator(), ((BinaryOp) rightSimplified).getRightOperand());
             }
+            // algebraic simplification
+            if (leftSimplified instanceof Number && rightSimplified instanceof Number)
+                return new Number(leftSimplified.value() * rightSimplified.value());
+        }
+        else if (getOperator() == Op.DIV) {
+            // division by 1
+            if (rightSimplified instanceof Number && rightSimplified.value() == 1) {
+                return leftSimplified;
+            }
+            // algebraic simplification
+            if (leftSimplified instanceof Number && rightSimplified instanceof Number) {
+                return new Number(leftSimplified.value() / rightSimplified.value()).simplify();
+            }
         }
 
-        // If no simplification was possible, return the original expression
+        // If no specific simplification rule applies, return the original expression with simplified operands
         return new BinaryOp(leftSimplified, getOperator(), rightSimplified);
     }
+
 }

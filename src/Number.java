@@ -71,10 +71,7 @@ public class Number extends Function {
      */
     @Override
     public boolean equals(Object o) {
-        if ((o instanceof Number))
-            if (((Number) o).getNumberValue() == this.getNumberValue())
-                return true;
-        return false;
+        return (!(o instanceof Variable) && o instanceof Function && (this.value() == ((Function) o).value()));
     }
 
     /**

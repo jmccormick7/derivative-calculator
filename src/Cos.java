@@ -57,7 +57,7 @@ public class Cos extends Function{
 
     /**
      * Overriding the simplify method so that it simplifies the operand of the sine function.
-     * @return the simplified cosine function
+     * @return
      */
     public Function simplify(){
         return new Cos(getOperand().simplify());
