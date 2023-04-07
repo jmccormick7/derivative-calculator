@@ -4,6 +4,9 @@ Functions are created using combinations of 8 different classes representing mul
 The functions can have many types of functions all nested inside one another for added complexity. 
 The derivative() method finds the derivative of any inputted function.
 Meanwhile value(input) gives the value of the function at a given x-component.
+Adding on to the project I created a GUI, and a class to convert String inputs to Functions.
+The GUI allows for function input, where it graphs both the function and its derivative. 
+It also calculates the value of that function and its derivative at a given x-value.
 
 Examples of GUI Functinoality: (screenshots)
 <img width="951" alt="Screenshot 2023-04-07 at 4 16 48 PM" src="https://user-images.githubusercontent.com/123213439/230675511-ba4b337c-fa6e-4f9c-8633-1c154d5ed49c.png">
