@@ -6,7 +6,7 @@
 public class Variable extends Function {
 
     /**
-     * Constructor for Variable, takes no inputs and sets the operandValue in super to null.
+     * Constructor for Variable, takes no inputs
      */
     public Variable() {
     }

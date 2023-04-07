@@ -1,3 +1,4 @@
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -67,7 +68,6 @@ public class Project3Tester {
         // testing that six getOperandValue is 6
         assertTrue("NumberConstructor getOperandValue failed", 6.0 == six.getNumberValue());
         assertTrue("Non Whole Number getOperandValue failed", 3.14 == pi.getNumberValue());
-
     }
 
     /**
@@ -255,11 +255,11 @@ public class Project3Tester {
         Number three = new Number(3);
         BinaryOp multTest = new BinaryOp(three, BinaryOp.Op.MULT, x);
         // testing at 1 and 2 to ensure it truly is correct
-        assertTrue("Simple chain rule failed", 3 == multTest.derivative().value(1));
-        assertTrue("Simple chain rule failed", 3 == multTest.derivative().value(2));
+        assertTrue("Simple product rule failed", 3 == multTest.derivative().value(1));
+        assertTrue("Simple product rule failed", 3 == multTest.derivative().value(2));
         BinaryOp multTest2 = new BinaryOp(x, BinaryOp.Op.MULT, x);
-        assertTrue("chain rule of variables failed", 2 == multTest2.derivative().value(1));
-        assertTrue("chain rule of variables failed", 4 == multTest2.derivative().value(2));
+        assertTrue("product rule of variables failed", 2 == multTest2.derivative().value(1));
+        assertTrue("product rule of variables failed", 4 == multTest2.derivative().value(2));
     }
 
     /**
@@ -380,16 +380,16 @@ public class Project3Tester {
 
         // Test multiplication simplification rules
         BinaryOp test5 = new BinaryOp(new Number(1), BinaryOp.Op.MULT, new Number(5));
-        assertEquals("Multiplication by 1 testfailed", new Number(5), test5.simplify());
+        assertEquals("Multiplication by 1 test failed", new Number(5), test5.simplify());
 
         BinaryOp test6 = new BinaryOp(new Number(2), BinaryOp.Op.MULT, new Number(0));
-        assertEquals("Multimplication by 0 test failed", new Number(0), test6.simplify());
+        assertEquals("Multiplication by 0 test failed", new Number(0), test6.simplify());
 
         BinaryOp test7 = new BinaryOp(new Number(0), BinaryOp.Op.MULT, new Number(3));
         assertEquals("0 as the first element in Mult Binary Op test failed", new Number(0), test7.simplify());
 
         BinaryOp test8 = new BinaryOp(new Number(2), BinaryOp.Op.MULT, new BinaryOp(new Number(3), BinaryOp.Op.PLUS, new Number(4)));
-        assertEquals("Algebra simplification", new Number(14), test8.simplify());
+        assertEquals("Algebraic simplification", new Number(14), test8.simplify());
 
         // Test division simplification rules
         BinaryOp test9 = new BinaryOp(new Number(5), BinaryOp.Op.DIV, new Number(1));
@@ -454,7 +454,7 @@ public class Project3Tester {
      * Testing the derivative method of Polynomial
      */
     @Test
-    public void testPolynomialderivative() {
+    public void testPolynomialDerivative() {
         Polynomial test = new Polynomial(new Number(2), 4);
         Polynomial test2 = new Polynomial(new Variable(), 2);
         Polynomial test3 = new Polynomial(new BinaryOp(new Variable(), BinaryOp.Op.PLUS, new Number(7)), 3);
@@ -813,5 +813,56 @@ public class Project3Tester {
         assertEquals("Operand is simplified test failed.", new Exp(new Number(8)), test3.simplify());
     }
 
-    // Testing complex functions
+    /**
+     * Complex function that includes all of the classes combined to test the effectiveness of the derivative function.
+     */
+    @Test
+    public void testComplexFunctionDerivative() {
+        Function x = new Variable();
+
+        // sin(x^2)
+        Function xSquared = new Polynomial(x, 2);
+        Function sinXSquared = new Sin(xSquared);
+
+        // e^(cos(x))
+        Function cosX = new Cos(x);
+        Function expCosX = new Exp(cosX);
+
+        // ln(x + 2)
+        Function xPlus2 = new BinaryOp(x, BinaryOp.Op.PLUS, new Number(2));
+        Function lnXPlus2 = new Log(xPlus2);
+
+        // e^(cos(x)) * ln(x + 2)
+        Function expCosXTimesLnXPlus2 = new BinaryOp(expCosX, BinaryOp.Op.MULT, lnXPlus2);
+
+
+        // f(x) = sin(x^2) + e^(cos(x)) * ln(x + 2)
+        Function complexFunction = new BinaryOp(sinXSquared, BinaryOp.Op.PLUS, expCosXTimesLnXPlus2);
+        Function complexFunctionDerivative = complexFunction.derivative();
+
+        double testValue = 1.0;
+        double expectedValue = Math.cos(testValue * testValue) * 2 * testValue
+                + Math.exp(Math.cos(testValue)) * (-Math.sin(testValue)) * Math.log(testValue + 2)
+                + Math.exp(Math.cos(testValue)) * (1 / (testValue + 2));
+        assertEquals(expectedValue, complexFunctionDerivative.value(testValue), 1e-9);
+
+        testValue = 2.0;
+        expectedValue = Math.cos(testValue * testValue) * 2 * testValue
+                + Math.exp(Math.cos(testValue)) * (-Math.sin(testValue)) * Math.log(testValue + 2)
+                + Math.exp(Math.cos(testValue)) * (1 / (testValue + 2));
+        assertEquals(expectedValue, complexFunctionDerivative.value(testValue), 1e-9);
+
+        testValue = -1.0;
+        expectedValue = Math.cos(testValue * testValue) * 2 * testValue
+                + Math.exp(Math.cos(testValue)) * (-Math.sin(testValue)) * Math.log(testValue + 2)
+                + Math.exp(Math.cos(testValue)) * (1 / (testValue + 2));
+        assertEquals(expectedValue, complexFunctionDerivative.value(testValue), 1e-9);
+
+        testValue = 7.0;
+        expectedValue = Math.cos(testValue * testValue) * 2 * testValue
+                + Math.exp(Math.cos(testValue)) * (-Math.sin(testValue)) * Math.log(testValue + 2)
+                + Math.exp(Math.cos(testValue)) * (1 / (testValue + 2));
+        assertEquals(expectedValue, complexFunctionDerivative.value(testValue), 1e-9);
+    }
+
 }

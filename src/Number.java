@@ -71,7 +71,14 @@ public class Number extends Function {
      */
     @Override
     public boolean equals(Object o) {
-        return (!(o instanceof Variable) && o instanceof Function && (this.value() == ((Function) o).value()));
+        try {
+            if (o instanceof Function)
+                ((Function)o).value();
+        }
+        catch(UnsupportedOperationException e){
+            return false;
+        }
+        return (o instanceof Function && (this.value() == ((Function) o).value()));
     }
 
     /**
