@@ -2,21 +2,31 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Orientation;
 
 
 public class FunctionGuiApp extends Application {
     private TextField inputField;
+    private TextField valueField;
+    private Button valueEnterButton;
     private Label functionLabel;
     private Label valueLabel;
     private Label derivativeLabel;
-    private Canvas canvas;
+    private Canvas functionCanvas;
     private Button enterButton;
+    private Function function;
+    private Label derivativeValLabel;
+    private Label functiontitlelabel;
+    private Label derivativetitlelabel;
+    private Canvas derivativeCanvas;
     public static void main(String[] args) {
         launch(args);
     }
@@ -31,20 +41,26 @@ public class FunctionGuiApp extends Application {
         functionLabel = new Label();
         valueLabel = new Label();
         derivativeLabel = new Label();
+        functiontitlelabel = new Label();
+        derivativetitlelabel = new Label();
 
-        canvas = new Canvas(400, 400);
+        functionCanvas = new Canvas(400, 400);
+        derivativeCanvas = new Canvas(400, 400);
 
-        enterButton = new Button("Enter");
+        enterButton = new Button("Enter Function");
         enterButton.setOnAction(e -> {
             try {
                 String input = inputField.getText();
-                Function function = FunctionCreator.createFunction(input);
+                function = FunctionCreator.createFunction(input);
 
                 functionLabel.setText("Function: " + function.toString());
-                valueLabel.setText("Value at 1: " + function.value(1));
+                valueLabel.setText("Value at: ");
                 derivativeLabel.setText("Derivative: " + function.derivative().toString());
+                derivativetitlelabel.setText("Graph of derivative: " + function.derivative().toString());
+                functiontitlelabel.setText("Graph of function: " + function.toString());
 
-                draw(function);
+                draw(function, functionCanvas);
+                draw(function.derivative(), derivativeCanvas);
             } catch (Exception ex) {
                 functionLabel.setText("Error: " + ex.getMessage());
                 valueLabel.setText("");
@@ -52,8 +68,37 @@ public class FunctionGuiApp extends Application {
                 ex.printStackTrace();
             }
         });
+        valueField = new TextField();
+        derivativeValLabel = new Label("");
 
-        root.getChildren().addAll(inputField, functionLabel, valueLabel, derivativeLabel, canvas, enterButton);
+        valueEnterButton = new Button("Enter Value for X");
+        valueEnterButton.setOnAction (e -> {
+            try {
+                String input = valueField.getText();
+                double inputVal = Double.parseDouble(input);
+                double outputVal = function.value(inputVal);
+                double derVal = function.derivative().value(inputVal);
+                valueLabel.setText("Value at " + inputVal + ": " + outputVal);
+                derivativeValLabel.setText("Value of Derivative at " + inputVal + ": " + derVal);
+            } catch (Exception ex) {
+                valueLabel.setText("Error: inputted value was not a number");
+                ex.printStackTrace();
+            }
+        });
+
+        Separator separator = new Separator(Orientation.VERTICAL);
+        separator.setMinWidth(150);
+
+        VBox functionGraphs = new VBox();
+        VBox derivativeGraphs = new VBox();
+        functionGraphs.getChildren().addAll(functiontitlelabel, functionCanvas);
+        derivativeGraphs.getChildren().addAll(derivativetitlelabel, derivativeCanvas);
+
+        HBox canvasArea = new HBox();
+        canvasArea.getChildren().addAll(functionGraphs, separator, derivativeGraphs);
+
+        root.getChildren().addAll(inputField, enterButton, functionLabel, valueField, valueEnterButton, derivativeLabel, valueLabel,
+                derivativeValLabel, canvasArea);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -61,7 +106,7 @@ public class FunctionGuiApp extends Application {
         stage.show();
     }
 
-    public void draw(Function function) {
+    public void draw(Function function, Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
@@ -87,24 +132,33 @@ public class FunctionGuiApp extends Application {
             double yMax = 10;
             double xRange = xMax - xMin;
             double yRange = yMax - yMin;
-            double xStep = xRange / canvas.getWidth();
+            double xStep = xRange / (canvas.getWidth() * 10); // Increase the resolution by a factor of 10
 
             double x = xMin;
             double y = function.value(x);
 
-            double xPixel = (x - xMin) / xRange * canvas.getWidth();
-            double yPixel = canvas.getHeight() - (y - yMin) / yRange * canvas.getHeight();
-
-            gc.beginPath();
-            gc.moveTo(xPixel, yPixel);
-
+            // Loop through the x values, and draw the function only for valid values
             for (x = xMin + xStep; x <= xMax; x += xStep) {
-                y = function.value(x);
-                xPixel = (x - xMin) / xRange * canvas.getWidth();
-                yPixel = canvas.getHeight() - (y - yMin) / yRange * canvas.getHeight();
-                gc.lineTo(xPixel, yPixel);
+                double newY = function.value(x);
+                if (!Double.isNaN(newY) && !Double.isInfinite(newY)) {
+                    double xPixel = (x - xMin) / xRange * canvas.getWidth();
+                    double yPixel = canvas.getHeight() - (y - yMin) / yRange * canvas.getHeight();
+
+                    double newXPixel = (x - xMin) / xRange * canvas.getWidth();
+                    double newYPixel = canvas.getHeight() - (newY - yMin) / yRange * canvas.getHeight();
+
+                    // Draw the line segment only if both endpoints have valid y values
+                    if (!Double.isNaN(y) && !Double.isInfinite(y)) {
+                        gc = canvas.getGraphicsContext2D();
+                        gc.setStroke(Color.BLUE);
+                        gc.setLineWidth(1);
+                        gc.strokeLine(xPixel, yPixel, newXPixel, newYPixel);
+                    }
+                    y = newY;
+                } else {
+                    y = newY;
+                }
             }
-            gc.stroke();
         }
     }
 }
