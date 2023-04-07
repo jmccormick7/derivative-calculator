@@ -161,6 +161,7 @@ public class BinaryOp extends Function{
      * @return a new Function that is the derivative of this function
      */
     public Function derivative() {
+        // simplify the two operands
         Function simpleLeft = getLeftOperand().simplify();
         Function simpleRight = getRightOperand().simplify();
         return getOperator().derivative(simpleLeft,simpleRight);
