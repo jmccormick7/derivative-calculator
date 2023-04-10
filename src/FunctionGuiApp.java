@@ -87,18 +87,34 @@ public class FunctionGuiApp extends Application {
         });
 
         Separator separator = new Separator(Orientation.VERTICAL);
-        separator.setMinWidth(150);
+        separator.setMinWidth(100);
+        Separator separator2 = new Separator(Orientation.VERTICAL);
+        separator2.setMinWidth(100);
+        Separator separator3 = new Separator(Orientation.VERTICAL);
+        separator3.setMinWidth(100);
+        Separator separator4 = new Separator(Orientation.VERTICAL);
+        separator4.setMinWidth(10);
+        Separator separator5 = new Separator(Orientation.HORIZONTAL);
+        separator5.setMinHeight(10);
+
 
         VBox functionGraphs = new VBox();
         VBox derivativeGraphs = new VBox();
         functionGraphs.getChildren().addAll(functiontitlelabel, functionCanvas);
         derivativeGraphs.getChildren().addAll(derivativetitlelabel, derivativeCanvas);
 
-        HBox canvasArea = new HBox();
-        canvasArea.getChildren().addAll(functionGraphs, separator, derivativeGraphs);
+        VBox topGadgets = new VBox();
+        topGadgets.getChildren().addAll(inputField, enterButton, functionLabel, valueField, valueEnterButton, derivativeLabel, valueLabel,
+                derivativeValLabel);
 
-        root.getChildren().addAll(inputField, enterButton, functionLabel, valueField, valueEnterButton, derivativeLabel, valueLabel,
-                derivativeValLabel, canvasArea);
+        HBox above = new HBox();
+        above.getChildren().addAll(separator4, topGadgets);
+
+
+        HBox canvasArea = new HBox();
+        canvasArea.getChildren().addAll(separator2, functionGraphs, separator, derivativeGraphs, separator3);
+
+        root.getChildren().addAll(separator5, above, canvasArea);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
