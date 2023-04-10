@@ -1,10 +1,12 @@
 # derivative-calculator
 Created a derivative calculator using Object Oriented Programming in Java for CSDS 132
+The calculations of derivatives, as well as for value were created for a Project assigned for class.
+The project guidelines themselves, as well as the project prompt and idea were created by Prof. Harold Connamacher.
+Adding on to the project I created a GUI, and a class to convert String inputs to Functions.
 Functions are created using combinations of 8 different classes representing multiple types of functions.
 The functions can have many types of functions all nested inside one another for added complexity. 
 The derivative() method finds the derivative of any inputted function.
 Meanwhile value(input) gives the value of the function at a given x-component.
-Adding on to the project I created a GUI, and a class to convert String inputs to Functions.
 The GUI allows for function input, where it graphs both the function and its derivative. 
 It also calculates the value of that function and its derivative at a given x-value.
 
