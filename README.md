@@ -11,7 +11,10 @@ The GUI allows for function input, where it graphs both the function and its der
 It also calculates the value of that function and its derivative at a given x-value.
 
 Examples of GUI Functionality:
+
+The GUI when loaded prior to function entry:
 <img width="1212" alt="Screenshot 2023-04-07 at 10 17 23 PM" src="https://user-images.githubusercontent.com/123213439/230699347-045c87dc-3044-48a6-91e8-b642f78601bf.png">
+Examples of function entry and display output of application:
 <img width="1212" alt="Screenshot 2023-04-07 at 10 17 39 PM" src="https://user-images.githubusercontent.com/123213439/230699348-f4cc40b0-6276-4d7c-8189-c3f34d3986ce.png">
 <img width="1212" alt="Screenshot 2023-04-07 at 10 17 57 PM" src="https://user-images.githubusercontent.com/123213439/230699349-c70ebcf7-910c-4b4e-ab88-8c38855ab4b6.png">
 <img width="1212" alt="Screenshot 2023-04-07 at 10 21 23 PM" src="https://user-images.githubusercontent.com/123213439/230699351-ea587545-9dbc-4e53-b383-44105ee6ce11.png">
