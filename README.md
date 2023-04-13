@@ -1,5 +1,5 @@
 # derivative-calculator
-Created a derivative calculator using Object Oriented Programming in Java for CSDS 132
+Created a derivative calculator using Object Oriented Programming in Java for a programming class
 The calculations of derivatives, as well as for value were created for a Project assigned for class.
 The project guidelines themselves, as well as the project prompt and idea were created by Prof. Harold Connamacher.
 Adding on to the project I created a GUI, and a class to convert String inputs to Functions.
